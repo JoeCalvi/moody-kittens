@@ -131,6 +131,7 @@ button.btn-special:hover{
 .kitten img{
   filter: drop-shadow(2px 4px 6px #1b1b1b);
   transition: all .35s ease;
+  height: 250px;
 }
 .kitten.happy img{
   filter: drop-shadow(2px 4px 6px #00ffb3);
@@ -168,6 +169,11 @@ button.btn-special:hover{
 .btn-cancel{
   background-color: red;
   border-color: lightcoral;
+}
+
+.btn-cancel#clear{
+  margin: 0 auto;
+  display: block;
 }
 .btn-cancel:hover{
   background-color: #fa4141;

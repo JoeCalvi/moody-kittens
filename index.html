@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Moody Kittens | CodeWorks</title>
   <link rel="shortcut icon" href="moody-logo.png" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css?family=Catamaran&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -29,16 +29,31 @@
         <img src="moody-logo.png" height="250" alt="Moody Kittens">
         <div class="mt-2">
           <b class="text-center">Hello Student</b>
-          <p>This is your starter template only feel free to modify the look as you tackle the challenges that we have laid out.</p>
+          <p>This is your starter template only feel free to modify the look as you tackle the challenges that we have
+            laid out.</p>
           <small>Good Luck and Have Fun!</small>
           <br>
           <button onclick="getStarted()">Get Started</button>
+          <br>
+          <button class="btn-cancel" onclick="clearKittens()">Clear Kittens</button>
         </div>
       </div>
     </div>
-    <div class="p-2">
-      <div id="kittens" class="d-flex align-items-center flex-wrap">
+
+    <div class="p-2 kitten">
+      <div id="kitten" class="d-flex align-items-center flex-wrap">
+        <img src="White_Kitten_Transparent_PNG_Clipart.png" alt="kitten" class="hidden kitten">
       </div>
+      <button class="btn-cancel" id="clear" onclick="clearKittens()">Clear Kittens</button>
+      <div class="pt-1">
+        <p class="hidden">Name:</p>
+        <p id="mood" class="hidden">Mood:</p>
+        <p id="affection" class="hidden">Affection:</p>
+        <button id="pet" class="btn-cancel hidden" onclick="pet(id)">Pet</button>
+        <button id="catnip" class="hidden" onclick="catnip(id)">Catnip</button>
+      </div>
+    </div>
+
   </main>
   <footer class="card bg-dark text-light p-2 d-flex align-items-center justify-content-center">
     <small>Created with <span style="color: var(--primary)">&hearts;</span> by CodeWorks</small>

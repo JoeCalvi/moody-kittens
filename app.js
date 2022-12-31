@@ -1,4 +1,5 @@
 let kittens = []
+
 /**
  * Called when submitting the new Kitten Form
  * This method will pull data from the form
@@ -7,6 +8,28 @@ let kittens = []
  * Then reset the form
  */
 function addKitten(event) {
+  event.preventDefault()
+  let form = event.target
+  let name = form.name.value
+
+  if (findKittenByName(name)) {
+    alert("Name already in use!")
+    return
+  }
+
+  let kitten = {
+    id: generateId(),
+    name: name,
+    affection: 5
+  }
+
+  setKittenMood(kitten)
+
+  kittens.push(kitten)
+  saveKittens()
+  form.reset()
+
+  drawKittens()
 }
 
 /**
@@ -14,6 +37,7 @@ function addKitten(event) {
  * Saves the string to localstorage at the key kittens 
  */
 function saveKittens() {
+  window.localStorage.setItem("kittens", JSON.stringify(kittens))
 }
 
 /**
@@ -22,12 +46,39 @@ function saveKittens() {
  * the kittens array to the retrieved array
  */
 function loadKittens() {
+  let kittensData = JSON.parse(window.localStorage.getItem("kittens"))
+  if (kittensData) {
+    kittens = kittensData
+  }
 }
 
 /**
  * Draw all of the kittens to the kittens element
  */
 function drawKittens() {
+
+  let kittensElement = document.getElementById("kitten")
+
+  let kittensTemplate = ""
+
+  kittens.forEach(kitten => {
+    kittensTemplate += `
+    <div class="p-2 kitten ${kitten.mood}">
+      <div id="kittens" class="d-flex align-items-center flex-wrap">
+        <img src="White_Kitten_Transparent_PNG_Clipart.png" alt="kitten" class="kitten">
+      </div>
+      <div>
+      <p>Name: ${kitten.name}</p>
+      <p>Mood: ${kitten.mood}</p>
+      <p>Affection: ${kitten.affection}</p>
+        <button class="btn-cancel" onclick="pet(${kitten.id})">Pet</button>
+        <button onclick="catnip(${kitten.id})">Catnip</button>
+      </div>
+    </div>
+    `
+  })
+
+  kittensElement.innerHTML = kittensTemplate
 }
 
 
@@ -37,8 +88,21 @@ function drawKittens() {
  * @return {Kitten}
  */
 function findKittenById(id) {
+
+  const result = kittens.find(kitten => kitten.id == id)
+  return result;
 }
 
+/**
+ * Find the kitten in the array by its id
+ * @param {string} id 
+ * @return {Kitten}
+ */
+function findKittenByName(name) {
+
+  const result = kittens.find(kitten => kitten.name.toLowerCase() == name.toLowerCase())
+  return result;
+}
 
 /**
  * Find the kitten in the array of kittens
@@ -49,7 +113,28 @@ function findKittenById(id) {
  * @param {string} id 
  */
 function pet(id) {
+
+  let kitten = findKittenById(id)
+
+  let randomNumber = Math.random()
+
+  if (randomNumber > .5) {
+    if (kitten.affection < 10) {
+      kitten.affection++
+    }
+  }
+  else {
+    if (kitten.affection > 0) {
+      kitten.affection--
+    }
+  }
+
+  setKittenMood(kitten)
+  saveKittens()
+  drawKittens()
 }
+
+
 
 /**
  * Find the kitten in the array of kittens
@@ -58,6 +143,16 @@ function pet(id) {
  * @param {string} id
  */
 function catnip(id) {
+
+  let kitten = findKittenById(id)
+
+  if (kitten.affection < 5) {
+    kitten.affection = 5
+  }
+
+  setKittenMood(kitten)
+  saveKittens()
+  drawKittens()
 }
 
 /**
@@ -65,13 +160,27 @@ function catnip(id) {
  * @param {Kitten} kitten 
  */
 function setKittenMood(kitten) {
+
+  if (kitten.affection == 0) {
+    kitten.mood = "gone"
+  } else if (kitten.affection < 5) {
+    kitten.mood = "angry"
+  } else if (kitten.affection == 5) {
+    kitten.mood = "tolerant"
+  } else if (kitten.affection > 5) {
+    kitten.mood = "happy"
+  }
 }
 
 /**
  * Removes all of the kittens from the array
  * remember to save this change
  */
-function clearKittens(){
+function clearKittens() {
+
+  kittens = []
+  saveKittens()
+  drawKittens()
 }
 
 /**
@@ -80,7 +189,8 @@ function clearKittens(){
  */
 function getStarted() {
   document.getElementById("welcome").remove();
-  console.log('Good Luck, Take it away')
+
+  drawKittens()
 }
 
 
@@ -98,7 +208,8 @@ function getStarted() {
  * @returns {string}
  */
 function generateId() {
-  return Math.floor(Math.random() * 10000000) + "-" + Math.floor(Math.random() * 10000000)
+  return Math.floor(Math.random() * 10000000) // + "-" + Math.floor(Math.random() * 10000000)
 }
 
 loadKittens();
+getStarted();
